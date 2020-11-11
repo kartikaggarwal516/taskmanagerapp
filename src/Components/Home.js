@@ -12,12 +12,12 @@ class Home extends Component {
     }
     addServer = () => {
         let { tasks, servers, pending } = this.state
-        let oldmin = Math.min(servers,tasks)
+        let oldmin = Math.min(servers, tasks)
         if (servers < 10) {
             servers++
         }
-        let newmin = Math.min(servers,tasks)
-        for(let i=oldmin;i<newmin;i++){
+        let newmin = Math.min(servers, tasks)
+        for (let i = oldmin; i < newmin; i++) {
             this.startInterval(i)
         }
         if (tasks >= servers) {
@@ -28,7 +28,7 @@ class Home extends Component {
     startInterval = (num) => {
         const interval = setInterval(() => {
             let percent = this.state.percent[num] || 0
-            if (percent === 100) {                
+            if (percent === 100) {
                 clearInterval(interval);
             }
             else {
@@ -51,8 +51,8 @@ class Home extends Component {
             pending = tasks - servers
         }
         this.setState({ pending })
-        const min = Math.min(servers,tasks)
-        for(let i=0;i<min;i++){
+        const min = Math.min(servers, tasks)
+        for (let i = 0; i < min; i++) {
             this.startInterval(i)
         }
     }
@@ -69,7 +69,7 @@ class Home extends Component {
         this.setState({ servers })
     }
     render() {
-        const { servers, tasks, percent, pending } = this.state        
+        const { servers, tasks, percent, pending } = this.state
         return (
             <div className="container">
                 <div className="box1">
@@ -85,16 +85,9 @@ class Home extends Component {
                                 </form>
                             </div>
                             <div className="tasksview">
-                                <div className="ongoing">
-                                    {(tasks <= servers && tasks > 0) &&
-                                        ' '.repeat(tasks).split("").map((task,i) => {
-                                            return (
-                                                <ProgressBar now={percent[i] || 0} label={`${percent[i] || 0}%`} />
-                                            )
-                                        })
-                                    }
-                                    {(tasks > servers) &&
-                                        ' '.repeat(servers).split("").map((task,i) => {
+                                <div className="ongoing">                                    
+                                    {(tasks > 0) &&
+                                        ' '.repeat(Math.min(tasks,servers)).split("").map((task, i) => {
                                             return (
                                                 <ProgressBar now={percent[i] || 0} label={`${percent[i] || 0}%`} />
                                             )
