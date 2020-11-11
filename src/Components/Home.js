@@ -69,8 +69,7 @@ class Home extends Component {
         this.setState({ servers })
     }
     render() {
-        const { servers, tasks, percent, pending } = this.state
-        console.log("tasks", tasks, "servers", servers, "pending", pending,"percent",percent)
+        const { servers, tasks, percent, pending } = this.state        
         return (
             <div className="container">
                 <div className="box1">
