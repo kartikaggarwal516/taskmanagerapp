@@ -27,16 +27,37 @@ class Home extends Component {
     }
     startInterval = (num) => {
         const interval = setInterval(() => {
-            let percent = this.state.percent[num] || 0
-            if (percent === 100) {
+            let percentval = this.state.percent[num] || 0
+            if (percentval === 100) {
+                let { tasks, pending, percent } = this.state
+                
+                if (tasks > 0)
+                    tasks--
+                let arr = Object.keys(percent)
+                let indexarr = arr.map(n => Number(n))
+                let maxindex = Math.max(...indexarr)
+                maxindex++
+                if (pending > 0) {                                        
+                    pending--
+                    this.startInterval(maxindex)                   
+                }                
+                let obj = { ...percent }
+                delete obj[num]
+
+                this.setState({
+                    tasks,
+                    pending,
+                    percent: { ...obj }
+                })                
+
                 clearInterval(interval);
             }
             else {
-                percent += 5
+                percentval += 5
                 this.setState({
                     percent: {
                         ...this.state.percent,
-                        [num]: percent
+                        [num]: percentval
                     }
                 })
             }
@@ -70,6 +91,7 @@ class Home extends Component {
     }
     render() {
         const { servers, tasks, percent, pending } = this.state
+        console.log("tasks", tasks, "pending", pending, "servers", servers, "percent", percent)
         return (
             <div className="container">
                 <div className="box1">
@@ -85,20 +107,20 @@ class Home extends Component {
                                 </form>
                             </div>
                             <div className="tasksview">
-                                <div className="ongoing">                                    
+                                <div className="ongoing">
                                     {(tasks > 0) &&
-                                        ' '.repeat(Math.min(tasks,servers)).split("").map((task, i) => {
+                                        Object.keys(percent).map((task, i) => {
                                             return (
-                                                <ProgressBar now={percent[i] || 0} label={`${percent[i] || 0}%`} />
+                                                <ProgressBar key={i} now={percent[task] || 0} label={`${percent[task] || 0}%`} />
                                             )
                                         })
                                     }
                                 </div>
                                 <div className="pending">
                                     {pending > 0 &&
-                                        ' '.repeat(pending).split("").map(task => {
+                                        ' '.repeat(pending).split("").map((task, i) => {
                                             return (
-                                                <div className="pendview">
+                                                <div key={i} className="pendview">
                                                     <ProgressBar style={{ flex: 1 }} now={0} />
                                                     <img src={delimg} onClick={this.removeTask} />
                                                 </div>

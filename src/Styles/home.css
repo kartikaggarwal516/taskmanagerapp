@@ -47,3 +47,4 @@ img{
 .serverview{
     margin-top: 20px;
 }
+/* ' '.repeat(Math.min(tasks,servers)).split("") */
